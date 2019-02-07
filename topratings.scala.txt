@@ -1,0 +1,15 @@
+import org.apache.spark.{SparkConf, SparkContext}
+object topmovies{
+def main(args:Array[String]) = {
+ val conf = newSparkConf().setMaster("local[*]").setAppName("topmovies")
+val sc = new SparkContext(conf)
+val rat = sc.textFile(inputlocation of ratings.dst)
+val rati = rat.map(x=>(x.split("::")))
+val tp = rati.map(x=>(x(1),1)).reduceByKey(_+_)
+val tv = tp.filter(x=>(x._2>40)
+val mj = rat.map(x=>(x(2),x(1))
+val k = tv.join(rat).sortByKey(false).take(20)
+val movieids = k.map(j=>j._1._2)
+movieids.collect()
+sc.stop
+}
